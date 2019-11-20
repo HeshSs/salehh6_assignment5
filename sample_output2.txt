@@ -1,0 +1,12 @@
+Claim on 2019-01-01 for contract Alice_car_contract was successful.
+Claim on 2019-01-23 for contract Alice_car_contract was successful.
+Claim on 2019-01-20 for contract Robert_home_contract was not successful.
+Claim on 2019-09-09 for contract David_home_contract was successful.
+Claim on 2019-09-09 for contract David_car_contract was not successful.
+Total amount claimed by Alice is 2000
+Total amount received by Alice is 1600
+Total amount claimed by Robert is 15000
+Total amount received by Robert is 0
+Total amount claimed by David is 1100000
+Total amount received by David is 1000000
+
