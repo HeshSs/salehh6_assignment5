@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,7 +38,9 @@ abstract class Plan {
         // Extracting the age of the customer
         LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localBirthDate = customer.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        long age = localCurrentDate.getYear() - localBirthDate.getYear();
+        // Period.between gets the time difference of 2 dates in (years, month and days)
+        Period period = Period.between(localBirthDate, localCurrentDate);   /* Changed */
+        long age = period.getYears();
         // Checking if the age is in the range.
         if (!customerAgeCriterion.isInRange(age))
             return false;
