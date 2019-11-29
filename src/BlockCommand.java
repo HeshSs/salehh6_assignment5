@@ -15,6 +15,7 @@ class BlockCommand extends Command {
     void addTag(Tag tag) {
         tags.put(tag.getName(), tag);
     }
+    // this allows classes like CarPlan, HomePlan and Company to have more than one criteria - Added for Assignment 5 Part 1
     void addTagToList(Tag tag) {
         if (planTags.get(tag.getName()) == null) {
             planTags.put(tag.getName(), new ArrayList<Tag>());
@@ -34,6 +35,8 @@ class BlockCommand extends Command {
             database.insertHome(new Home(tags));
         } if (blockType.equals(Car.inputTag)) {
             database.insertCar(new Car(tags));
+        } if (blockType.equals(Company.inputTag)) {
+            database.insertCompany(new Company(planTags));
         } if (blockType.equals(Claim.inputTag)) {
             Claim claim = new Claim(tags);
             database.insertClaim(claim);
@@ -80,7 +83,7 @@ class BlockCommand extends Command {
             return false;
 
         // If the customer was not eligible.
-        if (!plan.isEligible(customer, claim.getDate()))
+        if (!plan.isEligible(customer, claim.getDate(), database))      /* database added for Assignment 5 Part 2 */
             return false;
 
         return plan.isEligible(insurable, claim.getDate());

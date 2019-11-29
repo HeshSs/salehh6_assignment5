@@ -6,6 +6,8 @@ class Customer {
     private String name;
     private Date dateOfBirth;
     private long income;
+    // Added for Assignment 5 Part 2
+    private long wealth;
 
     static final String inputTag = "CUSTOMER";
 
@@ -30,4 +32,10 @@ class Customer {
     public static String getInputTag() {
         return inputTag;
     }
+
+    // Added for Assignment 5 Part 2
+    public long getWealth() { return wealth; }
+
+    public void setWealth(long wealth) { this.wealth = wealth; }
+
 }

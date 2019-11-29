@@ -12,6 +12,7 @@ abstract class Plan {
     long deductible;
     RangeCriterion customerAgeCriterion = new RangeCriterion();
     RangeCriterion customerIncomeCriterion = new RangeCriterion();
+    RangeCriterion customerWealthCriterion = new RangeCriterion();
 
     Plan(HashMap<String, ArrayList<Tag>> tags) {
         name = tags.get("NAME").get(0).getValue();
@@ -45,15 +46,20 @@ abstract class Plan {
 
     abstract Insurable getInsuredItem(String insurableID, Database database);
 
-    boolean isEligible(Customer customer, Date currentDate) {
+    boolean isEligible(Customer customer, Date currentDate, Database database) {
         // Extracting the age of the customer
         LocalDate localCurrentDate = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localBirthDate = customer.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         // Period.between gets the time difference of 2 dates in (years, month and days)
-        Period period = Period.between(localBirthDate, localCurrentDate);   /* Changed */
+        Period period = Period.between(localBirthDate, localCurrentDate);       /* Added for Assignment 5 Part 1 */
         long age = period.getYears();
         // Checking if the age is in the range.
         if (!customerAgeCriterion.isInRange(age))
+            return false;
+        //Calculate wealth of the customer
+        database.setCustomerWealth(customer);       /* Added for Assignment 5 Part 2 */
+        // Checking if the customer wealth is in the range.
+        if (!customerWealthCriterion.isInRange(customer.getWealth()))
             return false;
         // Checking if the income is in the range.
         return customerIncomeCriterion.isInRange(customer.getIncome());

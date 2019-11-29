@@ -12,9 +12,19 @@ class CarPlan extends Plan {
         ArrayList<Tag> carMileageTags = tags.get("CAR.MILEAGE");
         if (carMileageTags != null) {
             int carMileageSize = carMileageTags.size();
-            customerAgeCriterion.addCriterion(carMileageTags.get(carMileageSize-1));
+            mileageCriterion.addCriterion(carMileageTags.get(carMileageSize-1));
             if (carMileageSize > 1) {
-                customerAgeCriterion.addCriterion(carMileageTags.get(carMileageSize-2));
+                mileageCriterion.addCriterion(carMileageTags.get(carMileageSize-2));
+            }
+        }
+
+        // If the customer applies for car plan, check if their wealth is in range - Added for Assignment 5 Part 2
+        ArrayList<Tag> customerWealthTags = tags.get("CUSTOMER.WEALTH");
+        if (customerWealthTags != null) {
+            int customerWealthSize = customerWealthTags.size();
+            customerWealthCriterion.addCriterion(customerWealthTags.get(customerWealthSize-1));
+            if (customerWealthSize > 1) {
+                customerWealthCriterion.addCriterion(customerWealthTags.get(customerWealthSize-2));
             }
         }
     }

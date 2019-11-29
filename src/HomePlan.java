@@ -12,6 +12,16 @@ class HomePlan extends Plan {
     HomePlan(HashMap<String, ArrayList<Tag>> tags) {
         super(tags);
 
+        // If the customer applies for home plan, check if their wealth is in range - Added for Assignment 5 Part 2
+        ArrayList<Tag> customerWealthTags = tags.get("CUSTOMER.WEALTH");
+        if (customerWealthTags != null) {
+            int customerWealthSize = customerWealthTags.size();
+            customerWealthCriterion.addCriterion(customerWealthTags.get(customerWealthSize-1));
+            if (customerWealthSize > 1) {
+                customerWealthCriterion.addCriterion(customerWealthTags.get(customerWealthSize-2));
+            }
+        }
+
         ArrayList<Tag> homeValueTags = tags.get("HOME.VALUE");
         if (homeValueTags != null) {
             int homeValueSize = homeValueTags.size();
@@ -42,7 +52,7 @@ class HomePlan extends Plan {
         // Extracting the age of the home
         LocalDate localCurrentDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localBuiltDate = home.getBuildDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        long age = localCurrentDate.getYear() - localBuiltDate.getYear();;
+        long age = localCurrentDate.getYear() - localBuiltDate.getYear();
         // Checking if the age is in the range.
         return homeAgeCriterion.isInRange(age);
     }

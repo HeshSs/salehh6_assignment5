@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 class Database {
     private ArrayList<Customer> customers = new ArrayList<>();
+    private ArrayList<Company> companies = new ArrayList<>();
     private ArrayList<Home> homes = new ArrayList<>();
     private ArrayList<Car> cars = new ArrayList<>();
     private ArrayList<Plan> plans = new ArrayList<>();
@@ -12,8 +13,10 @@ class Database {
         homes.add(home);
     }
 
-    void insertCar(Car car) {
-        cars.add(car);
+    void insertCar(Car car) { cars.add(car); }
+
+    void insertCompany(Company company) {
+        companies.add(company);
     }
 
     void insertCustomer(Customer customer) {
@@ -54,6 +57,47 @@ class Database {
                 return contract;
         }
         return null;
+    }
+
+    // Calculates and sets customer's wealth - Added for Assignment 5 Part 2
+    void setCustomerWealth(Customer customer) {
+        long wealth = 0;
+        // check if the customer owns any companies
+        for (Company company : companies) {
+            if (company.getOwnerName().equals(customer.getName())) {
+                wealth += company.getValue();
+            }
+        }
+        // check if the customer owns a company that owns another company
+        for (Company company : companies) {
+            for (Company com : companies) {
+                if (company.getOwnerName().equals(customer.getName()) && company.getCompanyName().equals(com.getOwnerName())) {
+                    wealth += com.getValue();
+                }
+            }
+        }
+        // check if the customer owns any homes
+        for (Home home : homes) {
+            if (home.ownerName.equals(customer.getName())) {
+                wealth += home.value;
+            }
+        }
+        // check if the customer owns any cars
+        for (Car car : cars) {
+            if (car.ownerName.equals(customer.getName())) {
+                wealth += car.value;
+            }
+        }
+        customer.setWealth(wealth);
+    }
+
+    ArrayList<Company> getCompaniesByOwnerName(String ownerName) {
+        ArrayList<Company> result = new ArrayList<>();
+        for (Company company : companies) {
+            if (company.getOwnerName().equals(ownerName))
+                result.add(company);
+        }
+        return companies;
     }
 
     /* This function has been updated to output a list
