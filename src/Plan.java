@@ -13,17 +13,28 @@ abstract class Plan {
     RangeCriterion customerAgeCriterion = new RangeCriterion();
     RangeCriterion customerIncomeCriterion = new RangeCriterion();
 
-    Plan(HashMap<String, Tag> tags) {
-        name = tags.get("NAME").getValue();
-        premium = Integer.parseInt(tags.get("PREMIUM").getValue());
-        maxCoveragePerClaim = Integer.parseInt(tags.get("MAX_COVERAGE_PER_CLAIM").getValue());
-        deductible = Integer.parseInt(tags.get("DEDUCTIBLE").getValue());
+    Plan(HashMap<String, ArrayList<Tag>> tags) {
+        name = tags.get("NAME").get(0).getValue();
+        premium = Integer.parseInt(tags.get("PREMIUM").get(0).getValue());
+        maxCoveragePerClaim = Integer.parseInt(tags.get("MAX_COVERAGE_PER_CLAIM").get(0).getValue());
+        deductible = Integer.parseInt(tags.get("DEDUCTIBLE").get(0).getValue());
 
-        if (tags.get("CUSTOMER.AGE") != null) {
-            customerAgeCriterion.addCriterion(tags.get("CUSTOMER.AGE"));
+        ArrayList<Tag> ageTags = tags.get("CUSTOMER.AGE");
+        if (ageTags != null) {
+            int ageTagSize = ageTags.size();
+            customerAgeCriterion.addCriterion(ageTags.get(ageTagSize-1));
+            if (ageTagSize > 1) {
+                customerAgeCriterion.addCriterion(ageTags.get(ageTagSize-2));
+            }
         }
-        if (tags.get("CUSTOMER.INCOME") != null) {
-            customerIncomeCriterion.addCriterion(tags.get("CUSTOMER.INCOME"));
+
+        ArrayList<Tag> incomeTags = tags.get("CUSTOMER.INCOME");
+        if (incomeTags != null) {
+            int incomeTagSize = incomeTags.size();
+            customerIncomeCriterion.addCriterion(incomeTags.get(incomeTagSize-1));
+            if (incomeTagSize > 1) {
+                customerAgeCriterion.addCriterion(incomeTags.get(incomeTagSize-2));
+            }
         }
 
     }

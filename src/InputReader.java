@@ -59,6 +59,7 @@ class InputReader {
                 if (tokens.length != 3 || tokens[1].length() != 1)
                     throw new BadCommandException("Invalid tag.");
                 command.addTag(new Tag(tokens));
+                command.addTagToList(new Tag(tokens));
             }
         }
         return command;

@@ -1,10 +1,12 @@
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 class BlockCommand extends Command {
     private String blockType;
     private HashMap<String, Tag> tags = new HashMap<>();
+    private HashMap<String, ArrayList<Tag>> planTags = new HashMap<>();
 
     BlockCommand(String blockType) {
         this.blockType = blockType;
@@ -12,6 +14,12 @@ class BlockCommand extends Command {
 
     void addTag(Tag tag) {
         tags.put(tag.getName(), tag);
+    }
+    void addTagToList(Tag tag) {
+        if (planTags.get(tag.getName()) == null) {
+            planTags.put(tag.getName(), new ArrayList<Tag>());
+        }
+        planTags.get(tag.getName()).add(tag);
     }
 
     String getBlockType() {
@@ -41,9 +49,9 @@ class BlockCommand extends Command {
         } if (blockType.equals(Contract.inputTag)) {
             database.insertContract(new Contract(tags));
         } if (blockType.equals(HomePlan.inputTag)) {
-            database.insertPlan(new HomePlan(tags));
+            database.insertPlan(new HomePlan(planTags));
         } if (blockType.equals(CarPlan.inputTag)) {
-            database.insertPlan(new CarPlan(tags));
+            database.insertPlan(new CarPlan(planTags));
         }
     }
 

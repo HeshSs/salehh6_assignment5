@@ -6,11 +6,16 @@ class CarPlan extends Plan {
     static final String inputTag = "CAR_PLAN";
     RangeCriterion mileageCriterion = new RangeCriterion();
 
-    CarPlan(HashMap<String, Tag> tags) {
+    CarPlan(HashMap<String, ArrayList<Tag>> tags) {
         super(tags);
 
-        if (tags.get("CAR.MILEAGE") != null) {
-            mileageCriterion.addCriterion(tags.get("CAR.MILEAGE"));
+        ArrayList<Tag> carMileageTags = tags.get("CAR.MILEAGE");
+        if (carMileageTags != null) {
+            int carMileageSize = carMileageTags.size();
+            customerAgeCriterion.addCriterion(carMileageTags.get(carMileageSize-1));
+            if (carMileageSize > 1) {
+                customerAgeCriterion.addCriterion(carMileageTags.get(carMileageSize-2));
+            }
         }
     }
 

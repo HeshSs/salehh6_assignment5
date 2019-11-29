@@ -9,14 +9,25 @@ class HomePlan extends Plan {
     private RangeCriterion homeValueCriterion = new RangeCriterion();
     private RangeCriterion homeAgeCriterion = new RangeCriterion();
 
-    HomePlan(HashMap<String, Tag> tags) {
+    HomePlan(HashMap<String, ArrayList<Tag>> tags) {
         super(tags);
 
-        if (tags.get("HOME.VALUE") != null) {
-            homeValueCriterion.addCriterion(tags.get("HOME.VALUE"));
+        ArrayList<Tag> homeValueTags = tags.get("HOME.VALUE");
+        if (homeValueTags != null) {
+            int homeValueSize = homeValueTags.size();
+            customerAgeCriterion.addCriterion(homeValueTags.get(homeValueSize-1));
+            if (homeValueSize > 1) {
+                customerAgeCriterion.addCriterion(homeValueTags.get(homeValueSize-2));
+            }
         }
-        if (tags.get("HOME.AGE") != null) {
-            homeAgeCriterion.addCriterion(tags.get("HOME.AGE"));
+
+        ArrayList<Tag> homeAgeTags = tags.get("HOME.AGE");
+        if (homeAgeTags != null) {
+            int homeAgeSize = homeAgeTags.size();
+            customerAgeCriterion.addCriterion(homeAgeTags.get(homeAgeSize-1));
+            if (homeAgeSize > 1) {
+                customerAgeCriterion.addCriterion(homeAgeTags.get(homeAgeSize-2));
+            }
         }
     }
 
